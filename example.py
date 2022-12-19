@@ -1,7 +1,11 @@
 from saxo_openapi import API
 import saxo_openapi.endpoints.rootservices as rs
 import saxo_openapi.endpoints.portfolio as pf
-
+import saxo_openapi.endpoints.referencedata as rd
+from saxo_openapi.contrib.session import account_info
+from saxo_openapi.definitions.orders import AssetType as AT
+import json
+import juputil
 from pprint import pprint
 from os import path
 
@@ -14,6 +18,9 @@ with open(token_directory) as f:
 token24 = token24[0]
 
 client = API(access_token=token24)
+ai = account_info(client)
+
+
 
 # lets make a diagnostics request, it should return '' with a state 200
 r = rs.diagnostics.Get()
@@ -44,3 +51,11 @@ params = {
 r = pf.balances.AccountBalances(params=params)
 rv = client.request(r)
 pprint(rv)
+
+# Look up Vestas
+r = rd.instruments.Instruments(params = {'AccountKey': ai.AccountKey,
+                                         'KeyWords': 'Vestas',
+                                         'AssetTypes': AT.Stock,
+                                         'ExchangeIds': 'CSE'})
+print(json.dumps(client.request(r), indent=2))
+
