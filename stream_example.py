@@ -1,7 +1,10 @@
 import asyncio
 import websockets
 from saxo_openapi.contrib.ws import stream
+from pywood import *
 
+# See explanation:
+# https://saxo-openapi.readthedocs.io/en/latest/examples/stream_proc.html
 
 async def Echo(ContextId, token):
     hdrs = {
@@ -19,11 +22,7 @@ async def Echo(ContextId, token):
 
 if __name__ == "__main__":
     import sys
-
-    with open("c://Users//LMDN//token24.txt") as I:
-        token = I.read().strip()
-
-    print(token)
+    token = pywood.wrappers.get_token()
 
     asyncio.get_event_loop().run_until_complete(Echo(ContextId=sys.argv[1],
                                                      token=token))

@@ -3,6 +3,7 @@ import saxo_openapi.endpoints.trading as tr
 import saxo_openapi.endpoints.referencedata as rd
 import saxo_openapi.contrib.session as session
 import json
+from pywood import *
 
 def subscribe_for_prices(client, ContextId, instruments):
     """fetch instrument data by the name of the instrument and extract the Uic (Identifier)
@@ -49,8 +50,7 @@ def subscribe_for_prices(client, ContextId, instruments):
 if __name__ == "__main__":
 
     import sys
-    with open("c://Users//LMDN//token24.txt") as I:
-        token = I.read().strip()
+    token = pywood.wrappers.get_token()
    
     client = API(access_token=token)
     ContextId = sys.argv[1]
